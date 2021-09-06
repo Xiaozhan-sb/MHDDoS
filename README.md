@@ -1,14 +1,4 @@
-<p align="center"><img src="./screenshot/logo.ico" width="150px" height="150px" alt="aventium softworks"></p>
-
-<h1 align="center">MHDDoS - DDoS Attack Script With 36 Method</h1>
-
-<em><h5 align="center">(Code Lang - Python 3)</h5></em>
-
-
-<p align="center">Please Don't Hit '.gov'  and '.ir' Websites :)</p>
-
-<p align="center"><img src="https://i.imgur.com/aNrHJcA.png" width="1078" height="433" alt="POWER"></p>
-<p align="center"><img src="https://i.imgur.com/ueDhdte.png" width="1078" height="296" alt="SCRIPT"></p>
+# MHDDoS
 
 ## Features And Method
 
@@ -59,38 +49,15 @@
   * 👑 HELP | Show Usge Script
 
 * Layer4 DDoS Script
-#### Issues ? 
- * Telegram : @MH_ProDev_IR
- * Discord : MH_ProDev#0001
- * [GitHub][github]
-#### Like the project? Leave a ⭐ star on the repository!
-
-## Downloads
-
-You can download from [GitHub Releases](https://github.com/MHProDev/MHDDoS/releases)
-
-### Getting Started
-
-**Requirements**
-
-* [Python3][python3]
-* requests
-* PySocks
-* cfscrape
-* icmplib
-* scapy
----
 
 **Video's**
 
 * Aparat: https://www.aparat.com/v/bHcP9
-* YouTube : Coming soon..
 
 **toturial**
 
 * Aprat : https://aparat.com/v/XPn5Z
-* YouTube : https://youtu.be/lccRRTKw9CU
----
+
 
 **Clone and Install Script**
 
@@ -109,10 +76,4 @@ python3 start.py
 python3 start.py bypass https://example.com 5 1000 socks5.txt 100 100
 ```
 
-[python3]: https://python.org 'Python3'
-[github]: https://github.com/MHProDev/MHDDoS/issues 'GitHub'
-
-**💰 Donate:**
-* https://idpay.ir/mh-prodev
-* bitcoincash:qrwytj0aghszlqmfnku2h5ms4fad567ueg5g9dn2nu
 
