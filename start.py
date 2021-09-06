@@ -1132,7 +1132,7 @@ def downloadsocks(choice):
             f.write(r.content)
             f.close()
         except:
-            f.close()
+            pass
         try:
 
             req = requests.get("https://www.socks-proxy.net/", timeout=5, headers={"User-Agent", UserAgent}).text
@@ -1175,6 +1175,13 @@ def downloadsocks(choice):
         try:
             r = requests.get("https://raw.githubusercontent.com/FuckOS/socks5/main/socks5.txt", timeout=5)
             f.write(r.content)
+            f.close()
+        except:
+            pass
+       try:
+            r = requests.get("https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/socks5.txt", timeout=5)
+            f.write(r.content)
+            f.close()
         except:
             pass
         try:
