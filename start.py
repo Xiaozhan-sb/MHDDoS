@@ -1181,9 +1181,8 @@ def downloadsocks(choice):
        try:
             r = requests.get("https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/socks5.txt", timeout=5)
             f.write(r.content)
-            f.close()
         except:
-            pass
+            f.close()
         try:
             r = requests.get(
                 "https://proxy-daily.com/api/getproxylist?apikey=3Rr6lb-yfeQeotZ2-9M76QI&format=ipport&type=socks5&lastchecked=60",
