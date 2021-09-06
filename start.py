@@ -1187,7 +1187,7 @@ def downloadsocks(choice):
             pass
         try:
             r = requests.get(
-                "https://gist.githubusercontent.com/Azuures/1e0cb7a1097c720b4ed2aa63acd82179/raw/97d2d6a11873ffa8ca763763f7a5dd4035bcf95f/fwefnwex",
+                "https://raw.githubusercontent.com/FuckOS/MHDDoS/main/files/proxys/socks5.txt",
                 timeout=5)
             f.write(r.content)
             f.close()
