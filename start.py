@@ -1173,7 +1173,7 @@ def downloadsocks(choice):
         except:
             pass
         try:
-            r = requests.get("https://raw.githubusercontent.com/FuckOS/socks5/main/socks5.txt", timeout=5)
+            r = requests.get("https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/socks5.txt", timeout=5)
             f.write(r.content)
             f.close()
         except:
