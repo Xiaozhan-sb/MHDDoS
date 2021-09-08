@@ -1155,7 +1155,7 @@ def downloadsocks(choice):
     if choice == "5":
         f = open(out_file, 'wb')
         try:
-            r = requests.get("https://gist.githubusercontent.com/Xiaozhan-sb/9caad12025b95b7fde91e7eb77959145/raw/8bc086ab04eb1fa50ea5895f4784d6bd36af8ee5/proxy.txt",
+            r = requests.get("https://gist.githubusercontent.com/Xiaozhan-sb/26f42cdd65c5c14e18e92f2318f3bf04/raw/207c056e03ed5dfd68744a8d4b35823ce1cf923c/proxy.txt",
                              timeout=5)
             f.write(r.content)
         except:
