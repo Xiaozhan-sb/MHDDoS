@@ -1141,8 +1141,9 @@ def usgeaseets():
 
 def usge():
     usgeaseets()
-    print('* Coded For Better Stresser,Modified Layer7 By Xiao Zhan（Fried prawns）&Wu Yiyan（Canada Electric eel）')
-    print('python3 {} <method> <url> <socks_type5  or 1（1=HTTP）> <threads> <proxylist> <multiple> <timer>\n'.format(sys.argv[0]))
+    print('* Coded For Better Stresser,Layer7 Only By Xiao Zhan（Fried prawns）&Wu Yiyan（Canada electric eel）')
+    print('python3 {} <method> <url> <socks_type =5  or 1（1=HTTP）> <threads> <proxylist> <multiple> <timer>\n'.format(sys.argv[0]))
+    print('Pls put proxies in files/proxys,named it as socks5.txt or http.txt and manual test it.')
     print(' > Methods:')
     print(' - L7')
     print(' | {} | {} Methods'.format(l7s, len(l7)))
