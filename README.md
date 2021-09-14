@@ -24,20 +24,7 @@
    * <img src="http://iclouddnsbypass.com/wp-content/uploads/2015/02/iCloudDNSBypassServer.ico" width="16" height="16" alt="bypass"> BYPASS |  Bypass Normal AntiDDoS
 
 
-* 🧨 Layer4: 
-  * <img src="https://raw.githubusercontent.com/kgretzky/pwndrop/master/media/pwndrop-logo-512.png" width="16" height="16" alt="tcp"> TCP | TCP Flood Bypass
-  * <img src="https://styles.redditmedia.com/t5_2rxmiq/styles/profileIcon_snoob94cdb09-c26c-4c24-bd0c-66238623cc22-headshot.png" width="16" height="16" alt="udp"> UDP | UDP Flood Bypass
-  * <img src="https://belgium.devoteam.com/wp-content/uploads/sites/23/2020/06/Icon-accelarate-hyper-automation-with-RPA-300x301.png" width="16" height="16" alt="syn"> SYN | SYN Flood
-  * <img src="https://cdn.iconscout.com/icon/free/png-256/virus-2165355-1821015.png" width="16" height="16" alt="vse"> VSE | VSE Flood Only Connection
-  * <img src="https://cdn.iconscout.com/icon/free/png-512/redis-4-1175103.png" width="16" height="16" alt="mem"> MEM | Memcached Flood
-  * <img src="https://lyrahosting.com/wp-content/uploads/2020/06/ddos-attack-icon.png" width="16" height="16" alt="ntp"> NTP | NTP Flood OLD Method Of Layer4
-
-* 🏹 Layer3
-  * <img src="https://image.flaticon.com/icons/png/512/388/388466.png" width="16" height="16" alt="icmp"> ICMP | Flood ICMP Request
-  * ⚔️ POD | Ping Of Death OLD Method Of DDoS
-
 * ⚙️ Tools - Run With 'python3 start.py tools'
-  * 🌟 CFIP | Find Real IP address of Website Powered by Cloudflare
   * 🔪 DNS | Show Site DNS Records
   * ⚠️ PING | PING server
   * 📌 CHECK | Check Website Die or no
@@ -47,33 +34,3 @@
   * ❌ STOP | STOP All Attacks
   * 🌠 TOOLS | Tools Console
   * 👑 HELP | Show Usge Script
-
-* Layer4 DDoS Script
-
-**Video's**
-
-* Aparat: https://www.aparat.com/v/bHcP9
-
-**toturial**
-
-* Aprat : https://aparat.com/v/XPn5Z
-
-
-**Clone and Install Script**
-
-```console
-git clone https://github.com/MHProDev/MHDDoS.git
-cd MHDDoS
-pip3 install -r requirements.txt
-```
-
----
-
-**Launch Script**
-
-```console
-python3 start.py
-python3 start.py bypass https://example.com 5 1000 socks5.txt 100 100
-```
-
-
