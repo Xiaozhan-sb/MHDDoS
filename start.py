@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import secrets
 l7 = ["CFB", "BYPASS", "GET", "POST", "OVH", "STRESS", "OSTRESS", "DYN", "SLOW", "HEAD", "HIT", "NULL", "COOKIE", "BRUST", "PPS", "EVEN", "GSB", "DGB", "AVB"]
-to = ["CFIP", "DNS", "PING", "CHECK", "DSTAT", "INFO"]
+to = ["DNS", "PING", "CHECK", "DSTAT", "INFO"]
 ot = ["STOP", "TOOLS", "HELP"]
 methods = l7
 methodsl = l7 + to + ot
@@ -951,11 +951,7 @@ Other:
         pass
     else:
         exit()
-    if tool == "cfip":
-        domain = input(socket.gethostname() + '@'+name+'}:~/give-me-ipaddress# ')
-        cfip(domain)
-        return tools()
-    elif tool == "dstat":
+    if tool == "dstat":
         print(tool + ": command ready")
         return tools()
     elif tool == "dns":
@@ -1014,9 +1010,7 @@ def tools():
             if str('.') not in str(domain):
                 print('address not found')
                 toolgui()
-        if tool == "cfip":
-            cfip(domain)
-        elif tool == "dns":
+        if tool == "dns":
             print(tool + ": comming soon !")
         elif tool == "check":
             check(domain)
@@ -1032,13 +1026,6 @@ def tools():
     except IndexError:
         toolgui()
 
-
-def cfip(domain):
-    if str("http") in str(domain):
-        domain = domain.replace('https://', '').replace('http:', '').replace('/')
-    URL = "http://www.crimeflare.org:82/cgi-bin/cfsearch.cgi"
-    r = requests.post(URL, data={"cfS": {domain}}, headers={"User-Agent": UserAgent, }, timeout=1)
-    print(r.text)
 
 
 def check(domain):
