@@ -866,7 +866,7 @@ def check_socks(ms):
         th.join()
     ans = "y"
     if ans == "y" or ans == "":
-        elif choice == "5":
+        if choice == "5":
             with open(out_file, 'wb') as fp:
                 for lines in list(proxies):
                     fp.write(bytes(lines, encoding='utf8'))
